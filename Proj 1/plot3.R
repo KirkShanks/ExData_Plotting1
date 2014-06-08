@@ -1,17 +1,18 @@
 
+## Change working directory
+
 setwd("C:\\Users\\Kirk\\Documents\\Coursera\\Course 4 - Exploratory Data Analysis")
 
 if(!file.exists("Proj 1")){dir.create("Proj 1")}
 
 setInternet2(use = TRUE)
 
-
-## Question 1
-
 fileURL <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
 destfile <- "Proj 1/Proj1.zip"
 
-dataDownloaded <- date()
+dateDownloaded <- date()
+
+## Download and unzip the file to a dataframe
 
 temp <- tempfile()
 download.file(fileURL, temp)
@@ -23,6 +24,9 @@ DF <- read.table(unz(temp, filename = "household_power_consumption.txt")
                         , stringsAsFactors = FALSE)
 unlink(temp)
 rm(temp)
+
+## Create a subset of the dataframe and 
+## change the data types
 
 ElecPower <- subset(DF, Date %in% c("1/2/2007","2/2/2007"))
 ElecPower["DateTime"] <- NA
@@ -41,45 +45,53 @@ ElecPower[,10] <- as.POSIXct(paste(ElecPower[,1],ElecPower[,2], sep=" "))
 library(datasets)
 
 
-# Plot 3
+## Plot 3
+
+## Open the graphics device
 
 png(filename = "Proj 1/plot3.png"
     ,width = 480
     ,height = 480)
 
+## Create the first plot
+
 plot(ElecPower$DateTime
      ,ElecPower$Sub_metering_1
      ,type = "l"
-     #      ,xaxt="n"
      ,xlab = ""
      ,ylab = "Energy sub metering"
      ,col = "black"
-     ,ylim = c(0,38)
+     ,ylim = c(0,38) ## force the height of the plot
 )
 
-par(new=TRUE)
+
+par(new=TRUE) ## Overplotting on
+
+## Add the second plot
 
 plot(ElecPower$DateTime
      ,ElecPower$Sub_metering_2
      ,type = "l"
-     #      ,xaxt="n"
      ,xlab = ""
      ,ylab = "Energy sub metering"
      ,col = "red"
-     ,ylim = c(0,38)
+     ,ylim = c(0,38)  ## force the height of the plot
 )
 
-par(new=TRUE)
+par(new=TRUE) ## Overplotting on
+
+## Add the third plot
 
 plot(ElecPower$DateTime
      ,ElecPower$Sub_metering_3
      ,type = "l"
-     #      ,xaxt="n"
      ,xlab = ""
      ,ylab = "Energy sub metering"
      ,col = "blue"
-     ,ylim = c(0,38)
+     ,ylim = c(0,38)  ## force the height of the plot
 )
+
+## Add the legend to the plot
 
 legend("topright"
        ,col = c("black","red","blue")
@@ -88,4 +100,4 @@ legend("topright"
        ,lwd = 2
        )
 
-dev.off()
+dev.off() ## Turn off the device
